@@ -55,9 +55,21 @@ public:
 	int RFlag;
 	TreeNode* Lchild;
 	TreeNode* Rchild;
-	TreeNode() :Lchild(nullptr), Rchild(nullptr),flag(0),LFlag(0),RFlag(0) {}
+	TreeNode() :Lchild(nullptr), Rchild(nullptr), flag(0), LFlag(0), RFlag(0) {}
 };
+typedef struct HafuTreeNode
+{
+	int weight;
+	int parent;
+	int lchild;
+	int rchild;
 
+}HafuTreeNode;
+typedef struct HafuTree
+{
+	HafuTreeNode* data;
+	int length;
+};
 
 class QueueNode {
 public:
@@ -72,7 +84,7 @@ class StackNode {
 public:
 	TreeNode* data;
 	StackNode* next;
-	StackNode(): data(nullptr),next(nullptr){}
+	StackNode() : data(nullptr), next(nullptr) {}
 };
 
 StackNode* iniStack()
@@ -81,9 +93,9 @@ StackNode* iniStack()
 	return S;
 }
 
-void enStack(StackNode* S,TreeNode* T)
+void enStack(StackNode* S, TreeNode* T)
 {
-	if (!S||!T)return;
+	if (!S || !T)return;
 	StackNode* N = new StackNode;
 	N->data = T;
 	N->next = S->next;
@@ -218,7 +230,7 @@ void inorderNoWhile(TreeNode* T)
 }
 void backorderNoWhile(TreeNode* T)
 {
-	
+
 	TreeNode* Node = T;
 	StackNode* N = iniStack();
 	while (Node || !IsStackEmpty(N))
@@ -230,7 +242,7 @@ void backorderNoWhile(TreeNode* T)
 		}
 		else {
 			TreeNode* top = GetTopStack(N)->data;
-			if (top->Rchild && top->Rchild->flag==0)
+			if (top->Rchild && top->Rchild->flag == 0)
 			{
 				top = top->Rchild;
 				enStack(N, top);
@@ -241,9 +253,9 @@ void backorderNoWhile(TreeNode* T)
 				cout << top->data;
 				top->flag = 1;
 			}
-		    }
+		}
 	}
-		
+
 }
 
 void InThreadTree(TreeNode* T, TreeNode** pre)
@@ -251,12 +263,12 @@ void InThreadTree(TreeNode* T, TreeNode** pre)
 	if (T)
 	{
 		InThreadTree(T->Lchild, pre);
-		if (T->Lchild == nullptr) 
+		if (T->Lchild == nullptr)
 		{
 			T->LFlag = 1;
 			T->Lchild = *pre;
 		}
-		if ( *pre != nullptr && (*pre)->Rchild == nullptr) 
+		if (*pre != nullptr && (*pre)->Rchild == nullptr)
 		{
 			(*pre)->RFlag = 1;
 			(*pre)->Rchild = T;
@@ -266,7 +278,7 @@ void InThreadTree(TreeNode* T, TreeNode** pre)
 		InThreadTree(T->Rchild, pre);
 	}
 }
-TreeNode* bstSearch(TreeNode* T,int data)
+TreeNode* bstSearch(TreeNode* T, int data)
 {
 	if (T)
 	{
@@ -286,17 +298,17 @@ TreeNode* bstSearch(TreeNode* T,int data)
 		return NULL;
 	}
 }
-void InsertBstTree(TreeNode** T,int data) {
-	if (!*T){
+void InsertBstTree(TreeNode** T, int data) {
+	if (!*T) {
 		*T = new TreeNode;
 		(*T)->data = data;
 		return;
 	}
-	if (data>(*T)->data)
+	if (data > (*T)->data)
 	{
 		InsertBstTree((&(*T)->Rchild), data);
 	}
-	else if(data< (*T)->data){
+	else if (data < (*T)->data) {
 		InsertBstTree((&(*T)->Lchild), data);
 	}
 	else {
@@ -305,7 +317,73 @@ void InsertBstTree(TreeNode** T,int data) {
 
 }
 
+HafuTree* InitializeHafuTree(int* weight, int length)
+{
+	HafuTree* T = new HafuTree;
+	T->data = new HafuTreeNode[length * 2 - 1];
+	T->length = length;
 
+	for (int i = 0; i < length; i++)
+	{
+		T->data[i].weight = weight[i];
+		T->data[i].parent = 0;
+		T->data[i].lchild = -1;
+		T->data[i].rchild = -1;
+	}
+
+	return T;
+}
+int* SearchTwoMin(HafuTree* Ha)
+{
+	int len = Ha->length;
+	int min = INT_MAX, secondmin = INT_MAX;
+	int minindex = -1, secondminindex = -1;
+	for (int i = 0; i < len; i++)
+	{
+		if (Ha->data[i].parent == 0)
+			if (Ha->data[i].weight < min)
+			{
+				min = Ha->data[i].weight;
+				minindex = i;
+			}
+	}
+
+	for (int i = 0; i < len; i++)
+	{
+		if (Ha->data[i].parent == 0)
+			if (Ha->data[i].weight < secondmin && i != minindex) {
+				secondmin = Ha->data[i].weight;
+				secondminindex = i;
+			}
+	}
+	int* TwoNum = new int[2];
+	TwoNum[0] = minindex;
+	TwoNum[1] = secondminindex;
+	return TwoNum;
+}
+void CreatHafuTree(HafuTree* T)
+{
+	int len = T->length * 2 - 1;
+	for (int i = T->length; i < len; i++)
+	{
+		int* c = SearchTwoMin(T);
+		T->data[i].weight = T->data[c[0]].weight + T->data[c[1]].weight;
+		T->data[i].lchild = c[0];
+		T->data[i].rchild = c[1];
+		T->data[i].parent = 0;
+		T->data[c[0]].parent = i;
+		T->data[c[1]].parent = i;
+		T->length++;
+	}
+}
+void PreOrderHafuTree(HafuTree* T, int index)
+{
+	if (index != -1) {
+		cout << T->data[index].weight << " ";
+		PreOrderHafuTree(T, T->data[index].lchild);
+		PreOrderHafuTree(T, T->data[index].rchild);
+	}
+}
 
 TreeNode* GetFirst(TreeNode* T)
 {
@@ -319,11 +397,11 @@ TreeNode* GetNext(TreeNode* T)
 {
 	if (T->RFlag == 1)
 		return T->Rchild;
-	else{
+	else {
 		return GetFirst(T->Rchild);
-        }
+	}
 }
-  
+
 bool IsLoopStr(string s, int left, int right)
 {
 	if (s.length() < 2)return true;
@@ -342,14 +420,14 @@ bool IsLoopStr(string s, int left, int right)
 	return i >= j;
 }
 
-int  merge(int* c, int L,int M, int R)
+int  merge(int* c, int L, int M, int R)
 {
-	int i =L, index = 0;
+	int i = L, index = 0;
 	int a[100];
 	int j = M + 1;
 	int ans = 0;
 	while (i <= M && j <= R) {
-		ans += c[i] <= c[j] ? (R- j + 1) *c[i] : 0;
+		ans += c[i] <= c[j] ? (R - j + 1) * c[i] : 0;
 		a[index++] = c[i] <= c[j] ? c[i++] : c[j++];
 	}
 	while (i <= M)
@@ -362,20 +440,20 @@ int  merge(int* c, int L,int M, int R)
 	}
 	for (int i = 0; i < R - L + 1; i++)
 	{
-		c[L+i] = a[i];
+		c[L + i] = a[i];
 	}
 	return ans;
 }
 
-int poccess(int *a,int L,int R)
+int poccess(int* a, int L, int R)
 {
 	if (L == R)  return 0;
 	int M = L + ((R - L) >> 1);
-	return poccess(a, L, M)+
-	poccess(a, M + 1, R)+
-	merge(a, L,M, R);
+	return poccess(a, L, M) +
+		poccess(a, M + 1, R) +
+		merge(a, L, M, R);
 }
-int SmallSum(int* a,int L,int R)
+int SmallSum(int* a, int L, int R)
 {
 	return poccess(a, L, R);
 }
@@ -390,8 +468,8 @@ vector<int> SortLR(int* a, int L, int R)
 		{
 			swap(a[L++], a[++i]);
 		}
-		else if(a[L]>a[R])
-		{  
+		else if (a[L] > a[R])
+		{
 			swap(a[--j], a[L]);
 		}
 		else {
@@ -399,7 +477,7 @@ vector<int> SortLR(int* a, int L, int R)
 		}
 	}
 	swap(a[R], a[j]);
-	v.push_back(i+1); v.push_back(j);
+	v.push_back(i + 1); v.push_back(j);
 	return v;
 }
 
@@ -408,8 +486,8 @@ void QuickSort(int* a, int L, int R)
 	if (L < R)
 	{
 		vector<int> b = SortLR(a, L, R);
-		QuickSort(a, L, b[0]-1);
-		QuickSort(a, b[1]+1, R);
+		QuickSort(a, L, b[0] - 1);
+		QuickSort(a, b[1] + 1, R);
 	}
 
 }
@@ -489,10 +567,10 @@ int main()
 
 	//prePrint(Ro);
 	/*QueueNode* Node = IniQueue();
-	* 
-	* 
-	* 
-	* 
+	*
+	*
+	*
+	*
 	LevelOrder(Ro, Node);*/
 	/*string s;
 	cin >> s;
@@ -513,24 +591,29 @@ int main()
 
 
 
-	/*int a[4] = { 1,8,6,2};
-	QuickSort(a, 0,3);
-	for (int i = 0; i<4; i++)
-	{
-		cout << a[i] << " ";
-	}*/
+/*int a[4] = { 1,8,6,2};
+QuickSort(a, 0,3);
+for (int i = 0; i<4; i++)
+{
+	cout << a[i] << " ";
+}*/
 
 
-	//bstTreeTset
-	TreeNode* T = nullptr;
-	InsertBstTree(&T, 6);
-	InsertBstTree(&T, 9);
-	InsertBstTree(&T, 2);
-	InsertBstTree(&T, 4);
-	InsertBstTree(&T, 1);
-	InsertBstTree(&T, 5);
-	preOrderNoWhile(T);
+//bstTreeTset
+//TreeNode* T = nullptr;
+//InsertBstTree(&T, 6);
+//InsertBstTree(&T, 9);
+//InsertBstTree(&T, 2);
+//InsertBstTree(&T, 4);
+//InsertBstTree(&T, 1);
+//InsertBstTree(&T, 5);
+//preOrderNoWhile(T);
 
+
+	int wei[7] = { 5,1,3,6,11,2,4 };
+	HafuTree* T = InitializeHafuTree(wei, 7);
+	CreatHafuTree(T);
+	PreOrderHafuTree(T, T->length - 1);
 }
 
 
