@@ -3,13 +3,14 @@ using namespace std;
 #include<string>
 #include<map>
 #include<vector>
+#include<algorithm>
 int* getNext(string s)
 {
 	int* Next = new int[s.length()];
-	int i = 0;
+	unsigned int i = 0;
 	int j = -1;
 	Next[i] = j;
-	while (i < s.length() - 1) {
+	while (i <s.length()- 1) {
 		if (j == -1 || s[i] == s[j])
 		{
 			i++;
@@ -69,7 +70,7 @@ typedef struct HafuTree
 {
 	HafuTreeNode* data;
 	int length;
-};
+}HafuTree;
 
 class QueueNode {
 public:
@@ -120,11 +121,12 @@ bool IsStackEmpty(StackNode* S)
 }
 void CreatTree(TreeNode** Root)
 {
-	if (Root == nullptr)return;
+	if (*Root == nullptr)return;
 	char ch;
 	cin >> ch;
 	if (ch != '#')
 	{
+
 		(*Root) = new TreeNode;
 		(*Root)->data = ch;
 		CreatTree(&(*Root)->Lchild);
@@ -133,7 +135,7 @@ void CreatTree(TreeNode** Root)
 	}
 	else
 	{
-		Root = nullptr;
+		*Root = nullptr;
 	}
 }
 void prePrint(TreeNode* Root)
@@ -297,6 +299,7 @@ TreeNode* bstSearch(TreeNode* T, int data)
 	else {
 		return NULL;
 	}
+	return nullptr;
 }
 void InsertBstTree(TreeNode** T, int data) {
 	if (!*T) {
@@ -526,7 +529,7 @@ bool IsMatch(string s, string n)
 //			vector<int>ansc;
 //			if (al.find(target) != al.end())
 //			{
-//				if (al.find(target)->second.second)
+//	a			if (al.find(target)->second.second)
 //				{
 //					ansc.push_back(al.find(target)->second->first)
 //						ansc.push_back(target - al.ifind(target)->second->first);
@@ -540,6 +543,180 @@ bool IsMatch(string s, string n)
 //		return ans;
 //	}
 //};
+void swap(int*arr,int a, int b)
+{
+	int temp = arr[a];
+	arr[a] = arr[b];
+	arr[b] = temp;
+}
+
+void Heapinsert(int* a, int index)
+{
+	while (a[index] > a[(index - 1) / 2])
+	{
+		
+		swap(a,index, (index - 1) / 2);
+		index = (index - 1) / 2;
+	}
+}
+void Heapify(int* a, int index, int heapsize)
+{
+	int left = index * 2 + 1;
+	while (left < heapsize)
+	{
+		int MoreBig = left + 1 < heapsize && a[left + 1] > a[left] ? left + 1 : left;
+		MoreBig = a[MoreBig] > a[index] ? MoreBig : index;
+		if (MoreBig == index) {
+			break;
+		}
+		swap(a, index, MoreBig);
+		index = MoreBig;
+		left = index * 2 + 1;
+	}
+}
+void HeapSort(int* a, int length)
+{
+	if (a == nullptr)return;
+	for (int i = 0; i < length; i++)
+	{
+
+		Heapinsert(a, i);
+	}
+	int heapsize = length;
+
+	swap(a,0, --heapsize);
+
+	while (heapsize > 0)
+	{
+		Heapify(a, 0, heapsize);
+
+		swap(a,0, --heapsize);
+	}
+}
+int GetDigit(int a);
+int GetTimeDigit(int a, int t)
+{
+	int c = GetDigit(a);
+	if (t > c)
+	{
+		return 0;
+	}
+	else {
+		int ans = 0;
+		while (t--) {
+
+			ans = a % 10;
+			a /= 10;
+		}
+		return ans;
+	}
+
+}
+int GetDigit(int a)
+{
+	if (a == 0)return 1;
+	int Di = 0;
+	while (a > 0)
+	{
+		a /= 10;
+		Di++;
+	}
+	return Di;
+}
+int GetMaxDigit(int *a,int length)
+{
+	int i = length;
+	int Max = 0;
+	for (int j = 0; j < length; j++)
+	{
+		int m = a[j];
+		int c = 0;
+		while (m > 0)
+		{
+			m /= 10;
+			c++;
+		}
+		Max = max(Max, c);
+	}
+	return Max;
+} 
+
+void BarrSort(int* a,int length)
+{
+	int t = GetMaxDigit(a, length);
+	int digit = 1;
+	int* fuzhu = new int[length];
+	for (int i = 0; i < t;i++) {
+		int di[10] = { 0,0,0,0,0,0,0,0,0,0 };
+		for (int j = 0; j < length; j++)
+		{
+			di[GetTimeDigit(a[j], digit)]++;
+		}
+		for (int i = 1; i < 10; i++) {
+			di[i] = di[i] + di[i - 1];
+		}
+		for (int i = length-1; i >= 0; i--)
+		{
+			
+			fuzhu[di[GetTimeDigit(a[i], digit)]-1] = a[i];
+			di[GetTimeDigit(a[i], digit)]--;
+		}
+		digit++;
+		for (int i = 0; i < length; i++)
+		{
+			a[i] = fuzhu[i];
+		}
+			
+	}
+
+}
+
+
+
+class Solution {
+public:
+	vector<vector<int>> fourSum(vector<int>& nums, int target) {
+		vector<vector<int>>ans;
+		int len = nums.size();
+		sort(nums.begin(), nums.end());
+		for (int i = 0; i < len - 3; i++)
+		{
+			if (i != 0 && nums[i] == nums[i - 1])continue;
+			for (int j = i + 1; j < len - 2; j++)
+			{
+				if (nums[j] == nums[j - 1])continue;
+
+				int tar = target - nums[i] - nums[j];
+				int s = j + 1;
+				int d = len - 1;
+				while (s < d) {
+					int numv = nums[s] + nums[d];
+					if (numv > tar) {
+						    d--;
+					}
+					else if (numv < tar) {
+						  s++;
+					}
+					else {
+						vector<int>v;
+						v.push_back(nums[i]);
+						v.push_back(nums[j]);
+						v.push_back(nums[s]);
+						v.push_back(nums[d]);
+						ans.push_back(v);
+						for (++s; s < d && nums[s] == nums[s - 1]; ++s);
+						for (--d; s < d && nums[d] == nums[d + 1]; --d);
+					}
+
+				}
+
+			}
+		}
+		return ans;
+	}
+};
+
+
 
 
 int main()
@@ -611,9 +788,38 @@ for (int i = 0; i<4; i++)
 
 
 	int wei[7] = { 5,1,3,6,11,2,4 };
-	HafuTree* T = InitializeHafuTree(wei, 7);
-	CreatHafuTree(T);
-	PreOrderHafuTree(T, T->length - 1);
+	//HafuTree* T = InitializeHafuTree(wei, 7);
+	//CreatHafuTree(T);
+	//PreOrderHafuTree(T, T->length - 1);
+
+
+	//HeapSort
+	//HeapSort(wei, 7);
+	//for (int i : wei) {
+	//	cout << i<<" ";
+	//}
+
+
+//	int a = 4;
+//	cout << GetTimeDigit(a, 1);
+
+	/*BarrSort(wei, 7);
+	for (int i : wei) {
+	cout << i<<" ";
+    }*/
+
+	Solution S;
+	vector<int>nums{ 2,2,2,2,2 };
+	vector<vector<int>>ans;
+	ans = S.fourSum(nums, 0);
+	for (vector<int> a : ans)
+	{
+		for (int c : a)
+		{
+			cout << c << " ";
+		}
+		cout << endl;
+	}
 }
 
 
