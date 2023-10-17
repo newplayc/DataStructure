@@ -1,16 +1,20 @@
 #include<iostream>
-using namespace std;
 #include<string>
 #include<map>
 #include<vector>
 #include<algorithm>
+#include<queue>
+#include<stack>
+using namespace std;
+
 int* getNext(string s)
 {
 	int* Next = new int[s.length()];
-	unsigned int i = 0;
+	int i = 0;
 	int j = -1;
+	int v = s.length();
 	Next[i] = j;
-	while (i <s.length()- 1) {
+	while (i < v- 1) {
 		if (j == -1 || s[i] == s[j])
 		{
 			i++;
@@ -24,29 +28,29 @@ int* getNext(string s)
 	return Next;
 
 }
-void KmpMtch(string M, string s, int* Next)
-{
-	unsigned  int i = 0;
-	unsigned int j = 0;
-	while (i < M.length() && j < s.length()) {
-		if (j == -1 || M[i] == s[j]) {
+
+
+void kmpMatch(string master, string sub, int* next) {
+	int i = 0;
+	int j = 0;
+	int c = master.size();
+	int v = sub.size();
+	while (i < c && j < v) {
+		if (j == -1 || master[i] == sub[j]) {
 			i++;
 			j++;
 		}
 		else {
-			j = Next[j];
+			j = next[j];
 		}
 	}
-	if (j == s.length()) {
-		cout << "successful" << endl;
+	if (j == v) {
+		printf("kmp match success.\n");
 	}
 	else {
-		cout << "fail" << endl;
+		printf("kmp match fail.\n");
 	}
-
-
 }
-
 
 class TreeNode {
 public:
@@ -121,12 +125,10 @@ bool IsStackEmpty(StackNode* S)
 }
 void CreatTree(TreeNode** Root)
 {
-	if (*Root == nullptr)return;
-	char ch;
+	int ch;
 	cin >> ch;
-	if (ch != '#')
+	if (ch != 0)
 	{
-
 		(*Root) = new TreeNode;
 		(*Root)->data = ch;
 		CreatTree(&(*Root)->Lchild);
@@ -579,7 +581,6 @@ void HeapSort(int* a, int length)
 	if (a == nullptr)return;
 	for (int i = 0; i < length; i++)
 	{
-
 		Heapinsert(a, i);
 	}
 	int heapsize = length;
@@ -657,7 +658,6 @@ void BarrSort(int* a,int length)
 		}
 		for (int i = length-1; i >= 0; i--)
 		{
-			
 			fuzhu[di[GetTimeDigit(a[i], digit)]-1] = a[i];
 			di[GetTimeDigit(a[i], digit)]--;
 		}
@@ -671,53 +671,209 @@ void BarrSort(int* a,int length)
 
 }
 
-
-
-class Solution {
-public:
-	vector<vector<int>> fourSum(vector<int>& nums, int target) {
-		vector<vector<int>>ans;
-		int len = nums.size();
-		sort(nums.begin(), nums.end());
-		for (int i = 0; i < len - 3; i++)
-		{
-			if (i != 0 && nums[i] == nums[i - 1])continue;
-			for (int j = i + 1; j < len - 2; j++)
-			{
-				if (nums[j] == nums[j - 1])continue;
-
-				int tar = target - nums[i] - nums[j];
-				int s = j + 1;
-				int d = len - 1;
-				while (s < d) {
-					int numv = nums[s] + nums[d];
-					if (numv > tar) {
-						    d--;
-					}
-					else if (numv < tar) {
-						  s++;
-					}
-					else {
-						vector<int>v;
-						v.push_back(nums[i]);
-						v.push_back(nums[j]);
-						v.push_back(nums[s]);
-						v.push_back(nums[d]);
-						ans.push_back(v);
-						for (++s; s < d && nums[s] == nums[s - 1]; ++s);
-						for (--d; s < d && nums[d] == nums[d + 1]; --d);
-					}
-
-				}
-
-			}
-		}
-		return ans;
-	}
+struct ListNode {
+	int val;
+	ListNode* next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode* next) : val(x), next(next) {}
 };
 
+	ListNode* reverselist(ListNode* head, ListNode* tail, int k) {
+		ListNode* t = head->next;
+		ListNode* p;
+		ListNode* r = t;
+		ListNode* pre = tail;
+		int i = 0;
+		while (t && i < k) {
+			p = t->next;
+			t->next = pre;
+			pre = t;
+			t = p;
+			i++;
+		}
+		head->next = pre;
+		return r;
+	}
+	ListNode* reverseKGroup(ListNode* head, int k) {
+		int i = 0;
+		ListNode* t = new ListNode;
+		ListNode* tail = nullptr;
+		t->next = head;
+		ListNode* p = t;
+		int flag = 0;
+		ListNode* ret = head;
+		ListNode * not1 = nullptr;
+		while (t) {
+			t = t->next;
+			i++;
+			if (t) {
+				not1 = t;
+			}
+			if (flag == 0 && i == k) {
+				ret = t;
+				flag = 1;
+			}
+			if (i == k + 1) {
+				if (!t)
+				tail = not1;
+				else
+				tail = t;
 
 
+				p = reverselist(p, tail, k);
+				i = 0;
+			}
+		}
+		return ret;
+	}
+
+
+void headinsertcreatList(ListNode* head,int val) {
+	ListNode* t = new ListNode(val);
+	t->next = head->next;
+	head->next = t;
+}
+
+void printLIst(ListNode* head) {
+	ListNode* t = head;
+	while (t) {
+		cout << t->val << " ";
+		t = t->next;
+
+	}
+}
+
+
+int MaxWidthTree(TreeNode* root) {
+	if (!root)return 0;
+	queue<TreeNode*>q;
+	q.push(root);
+	TreeNode*  CurEnd = root;
+	TreeNode*  NextEnd = nullptr;
+	int cMax = 0;
+	int Max = 0;
+	while (!q.empty()) {
+		TreeNode* t = q.front();
+		q.pop();
+		cMax++;
+		if (t->Lchild != nullptr) {
+			q.push(t->Lchild);
+			NextEnd = t->Lchild;
+		}
+		if (t->Rchild != nullptr) {
+			q.push(t->Rchild);
+			NextEnd = t->Rchild;
+		}
+		if (t == CurEnd) {
+			Max = max(Max, cMax);
+			cMax = 0;
+			CurEnd = NextEnd;
+			NextEnd = nullptr;
+		}
+	}
+	return Max;
+}
+int TreeDepth(TreeNode* T) {
+	if (!T) { return 0; }
+	int l = TreeDepth(T->Lchild);
+	int R = TreeDepth(T->Rchild);
+	return l >= R ? l + 1 : R + 1;
+}
+
+
+
+bool IsBST(TreeNode* T) {
+	static int pre = INT_MIN;
+
+	if (!T)return true;
+	if (!IsBST(T->Lchild))return false;
+	if (T->data <= pre)return false;
+	pre = T->data;
+	return IsBST(T->Rchild);
+}
+
+typedef struct ReturnData
+{
+	bool isU;
+	int min;
+	int max;
+	bool IsBst;
+	ReturnData(bool isU,int min,int max,bool is):isU(isU),min(min),max(max),IsBst(is){}
+}ReturnData;
+ReturnData ISBST(TreeNode* T)
+{
+	if (!T)return ReturnData(false, 0, 0, false);
+	ReturnData lD = ISBST(T->Lchild);
+	ReturnData RD = ISBST(T->Rchild);
+	int min1 = T->data;
+	int max1 = T->data;
+
+	if (lD.isU) {
+		min1 = min(min1, lD.min);
+		max1 = max(max1, lD.max);
+	}
+	if (RD.isU) {
+		min1 = min(min1, RD.min);
+		max1 = max(max1, RD.max);
+	}
+
+	bool ISBst = true;
+	if (lD.isU && (!lD.IsBst || lD.max >= T->data)) {
+		ISBst = false;
+	}
+	if (RD.isU && (!RD.IsBst || RD.min <= T->data)) {
+		ISBst = false;
+	}
+
+	return ReturnData(true,min1, max1,ISBst);
+}
+
+
+typedef struct ReType
+{
+	int height;
+	bool IsB;
+	ReType(int IsB,int hei):height(hei),IsB(IsB){}
+
+}ReType;
+ReType IsBala(TreeNode* T) {
+	if (!T)return ReType(true, 0);
+	ReType LD = IsBala(T->Lchild);
+	ReType RD = IsBala(T->Rchild);
+
+	int height = LD.height > RD.height ? LD.height + 1 : RD.height + 1;
+	bool IsB = true;
+	if (!LD.IsB || !RD.IsB) {
+		IsB = false;
+	}
+	if (abs(LD.height - RD.height) > 1)
+	{
+		IsB = false;
+	}
+	return ReType(IsB, height);
+
+}
+struct Rep
+{
+	int height;
+	int nodes;
+	Rep(int h, int n) {
+		height = h;
+		nodes = n;
+	}
+};
+Rep ISFULLBT(TreeNode* T) {
+	if (!T)return Rep(0, 0);
+	
+	Rep LD = ISFULLBT(T->Lchild);
+	Rep RD = ISFULLBT(T->Rchild);
+
+	int height = LD.height > RD.height ? LD.height + 1 : RD.height + 1;
+	int nodes = LD.nodes + RD.nodes + 1;
+
+	return Rep(height, nodes);
+}
 
 int main()
 {
@@ -787,7 +943,7 @@ for (int i = 0; i<4; i++)
 //preOrderNoWhile(T);
 
 
-	int wei[7] = { 5,1,3,6,11,2,4 };
+	//int wei[7] = { 5,1,3,6,11,2,4 };
 	//HafuTree* T = InitializeHafuTree(wei, 7);
 	//CreatHafuTree(T);
 	//PreOrderHafuTree(T, T->length - 1);
@@ -808,18 +964,52 @@ for (int i = 0; i<4; i++)
 	cout << i<<" ";
     }*/
 
-	Solution S;
-	vector<int>nums{ 2,2,2,2,2 };
-	vector<vector<int>>ans;
-	ans = S.fourSum(nums, 0);
-	for (vector<int> a : ans)
-	{
-		for (int c : a)
-		{
-			cout << c << " ";
-		}
-		cout << endl;
-	}
+	//Solution S;
+	//vector<int>nums{ 2,2,2,2,2 };
+	//vector<vector<int>>ans;
+	//ans = S.fourSum(nums, 0);
+	//for (vector<int> a : ans)
+	//{
+	//	for (int c : a)
+	//	{
+	//		cout << c << " ";
+	//	}
+	//	cout << endl;
+	//}
+
+
+	//ListNode* head = new ListNode;
+	//headinsertcreatList(head, 5);
+	//headinsertcreatList(head, 4);
+	//headinsertcreatList(head, 3);
+	//headinsertcreatList(head, 2);
+	//headinsertcreatList(head, 1);
+
+
+	//ListNode* l  = reverseKGroup(head->next, 2);
+	//printLIst(l);
+
+		
+
+	 //string s = "sadadas";
+	 //string c = "das";
+	 //kmpMatch(s, c, getNext(c));
+
+    TreeNode* root = new TreeNode;
+	CreatTree(&root);
+
+
+	//cout<<MaxWidthTree(root);
+	//Rep R = ISFULLBT(root);
+	//int e = R.height;
+	//int v = R.nodes;
+	//if (v == pow(2, e) - 1)
+	//{
+	//	cout << "s";
+	//}
+	//else {
+	//	cout << "f";
+	//}
 }
 
 
