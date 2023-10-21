@@ -1,10 +1,11 @@
 #include<iostream>
 #include<string>
-#include<map>
 #include<vector>
 #include<algorithm>
 #include<queue>
 #include<stack>
+#include<unordered_map>
+#include<unordered_set>
 using namespace std;
 
 int* getNext(string s)
@@ -863,6 +864,8 @@ struct Rep
 		nodes = n;
 	}
 };
+
+
 Rep ISFULLBT(TreeNode* T) {
 	if (!T)return Rep(0, 0);
 	
@@ -875,8 +878,206 @@ Rep ISFULLBT(TreeNode* T) {
 	return Rep(height, nodes);
 }
 
+typedef struct Graph {
+	char* vexs;
+	int** arcs;
+	int vexNum;
+	int arcNum;
+}Graph;
+
+Graph* IniGraph(int vexnum) 
+{
+	Graph* G = new Graph;
+	G->vexs = new char[vexnum];
+	G->arcs = new int* [vexnum];
+	for (int i = 0; i < vexnum; i++)
+	{
+		G->arcs[i] = new int[vexnum];
+	}
+	G->vexNum = vexnum;
+	G->arcNum = 0;
+	return G;
+}
+void CreatGraph(Graph* G, int* N,char* vex) {
+	
+	for (int i = 0; i < G->vexNum; i++) {
+		 G->vexs[i] = vex[i];
+		for (int j = 0; j < G->vexNum; j++) {
+			G->arcs[i][j] = *(N + i * G->vexNum + j);
+			if (G->arcs[i][j] != 0)
+			{
+				G->arcNum++;
+			}
+		}
+	}
+	G->arcNum /= 2;
+}
+
+void DFS(Graph* G, int index, int* visit) {
+	cout << G->vexs[index] << " ";
+	visit[index] = 1;
+	for (int i = 0; i < G->vexNum; i++) {
+		if (G->arcs[index][i] == 1 && visit[i] == 0) {
+			DFS(G,  i,  visit);
+		}
+	}
+}
+
+void BFS(Graph* G, int index, int* visit)
+{
+	queue<int> q;
+	q.push(index);
+	visit[index] = 1;
+	while (!q.empty()) {
+		int i = q.front();
+		q.pop();
+		cout << G->vexs[i] << " ";
+		for (int j = 0; j < G->vexNum; j++) {
+			if (G->arcs[i][j] == 1 && visit[j] == 0) {
+				q.push(j);
+				visit[j] = 1;
+			}
+		}
+	}
+}
+
+
+
+struct Edge;
+typedef struct Node {
+public:
+
+	int value;
+	int in;
+	int out;
+	vector<Node*>nexts;
+	vector<Edge*>Edges;
+	Node(){}
+	Node(int value) {
+		this->value = value;
+		in = 0;
+		out = 0;
+	}
+}Node;
+
+typedef struct Edge {
+	int weight;
+	Node *From;
+	Node *To;
+	Edge() {}
+	Edge(int weight, Node* From, Node* To) {
+		this->weight = weight;
+		this->From = From;
+		this->To = To;
+	}
+}Edge;
+
+typedef struct Graph1 {
+	unordered_map<int, Node*> Nodes;
+	unordered_set<Edge*>Edges;
+}Graph1;
+
+
+Graph1* CreatMap(int p[4][3],int length) {
+	Graph1* G = new Graph1;
+	for (int i = 0; i < length; i++)
+	{
+		int  From = p[i][0];
+		int To = p[i][1];
+		int Weight = p[i][2];
+		if (G->Nodes.find(From)== G->Nodes.end())
+		{
+			Node* t = new Node(From);
+			G->Nodes.insert(make_pair(From,t));
+		}
+		if (G->Nodes.find(To) == G->Nodes.end()) {
+			Node* t = new Node(To);
+			G->Nodes.insert(make_pair(To,t));
+		}
+		Node* From1 = G->Nodes[From];
+		Node* To1 =  G->Nodes[To];
+		(*From1).out++;
+		(*To1).in++;
+		(*From1).nexts.push_back(To1);
+		Edge* t = new  Edge(Weight, From1, To1);
+		(*From1).Edges.push_back(t);
+		G->Edges.insert(t);
+	}
+	return G;
+}
+
+
+void BFS1(Node * F)
+{
+	queue<Node*>q;
+	unordered_set<Node*> set;
+	q.push(F);
+	set.insert(F);
+	while (!q.empty())
+	{
+		Node* t = q.front();
+		q.pop();
+		cout <<  (*t).value;
+		stack<Node*>stack;
+		for (Node* N : (*t).nexts)
+		{
+			if (set.find(N) == set.end())
+			{
+				q.push(N);
+				set.insert(N);
+			}
+		}
+	}
+}
+
+
+
+
+
+void DFS(Node* s)
+{
+    unordered_set<Node*>set;
+	stack<Node*>stack;
+	cout << s->value;
+	set.insert(s);
+	stack.push(s);
+	while(!stack.empty())
+	{
+		Node* cur = stack.top();
+		stack.pop();
+		for (Node* s : cur->nexts)
+		{
+			if (set.find(s) == set.end())
+			{
+				cout << s->value;
+				stack.push(cur);
+				stack.push(s);
+				set.insert(s);
+				break;
+			}
+		 }
+
+	}
+
+}
 int main()
 {
+	int v[4][3] = {
+		{1,3,1},
+		{2,3,2},
+		{2,4,3},
+		{3,2,4}
+	};
+	Graph1* G =   CreatMap(v,4);
+	//BFS1(G->Nodes[1]);
+	DFS(G->Nodes[1]);
+}
+
+
+
+
+//int main()
+//{
 
 	//string s{ "abaccababd" };
 	//string b{ "abacdc" };
@@ -995,8 +1196,8 @@ for (int i = 0; i<4; i++)
 	 //string c = "das";
 	 //kmpMatch(s, c, getNext(c));
 
-    TreeNode* root = new TreeNode;
-	CreatTree(&root);
+ //   TreeNode* root = new TreeNode;
+	//CreatTree(&root);
 
 
 	//cout<<MaxWidthTree(root);
@@ -1010,6 +1211,72 @@ for (int i = 0; i<4; i++)
 	//else {
 	//	cout << "f";
 	//}
-}
+	// 
+	// 
+	// 
+	// 
+//   int arcs[5][5] = {
+//		0,1,1,1,0,
+//		1,0,1,1,1,
+//		1,1,0,0,0,
+//		1,1,0,0,1,
+//		0,1,0,1,0
+//};
+//
+//
+//   Graph* G = IniGraph(5);
+//    CreatGraph(G, (int*)arcs,(char*)"ABCDE");
+//    int* visit = new int[5];
+//  for (int i = 0; i < 5; i++)
+//  {
+//	  visit[i] = 0;
+//  }
+//  //DFS(G,0, visit);
+//  BFS(G, 0, visit);
+//
+//		
+//
+//
+//}
 
-
+//public class Edge {
+//	public int weight;
+//	public Node from;
+//	public Node to;
+//	public Edge(int weight, Node From, Node To)
+//	{
+//		this.weight = weight;
+//		this.from = From;
+//		this.to = To;
+//	}
+//
+//}
+//
+//public class Node {
+//	public int value;
+//	public int in;
+//	public int out;
+//	public ArrayList<Node>nexts;
+//	public ArrayList<Edge>edges;
+//	public Node(int value) {
+//		this.value = value;
+//		in = 0;
+//		out = 0;
+//		nexts = new ArrayList<>();
+//		edges = new ArrayList<>();
+//	}
+//
+//
+//}
+//
+//public class Graph {
+//	public HashMap<Integer, Node>nodes;
+//	public HashSet<Edge>edges;
+//
+//	public Graph() {
+//		nodes = new HashMap<>();
+//		edges = new HashSet<>();
+//	}
+//
+//
+//}
