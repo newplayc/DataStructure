@@ -6,6 +6,7 @@
 #include<stack>
 #include<unordered_map>
 #include<unordered_set>
+
 using namespace std;
 
 int* getNext(string s)
@@ -985,6 +986,7 @@ Graph1* CreatMap(int p[4][3],int length) {
 		int  From = p[i][0];
 		int To = p[i][1];
 		int Weight = p[i][2];
+
 		if (G->Nodes.find(From)== G->Nodes.end())
 		{
 			Node* t = new Node(From);
@@ -1056,21 +1058,303 @@ void DFS(Node* s)
 				break;
 			}
 		 }
-
 	}
 
 }
+
+vector<Node* >TuoPUSort(Graph1* Graphc)
+{	
+	unordered_map<Node* , int>map;
+	queue<Node*>qu;
+	for (pair<int, Node*> p : Graphc->Nodes){	
+		map.insert(make_pair(p.second, p.first));
+		if (p.second->in == 0){
+			qu.push(p.second);
+		}
+    }
+	vector<Node*>v;
+	while (!qu.empty())
+	{
+		Node* N = qu.front();
+		qu.pop();
+		v.push_back(N);
+		for (Node* o : N->nexts){
+			o->in--;
+			map.insert(make_pair(o, o->in));
+			if (o->in == 0)
+			{
+				qu.push(o);
+			}
+		}
+
+	}
+	return v;
+	
+}
+
+
+
+class Edgeo {
+public:
+	bool operator()(const Edge* a, const Edge* b)const
+	{
+		return a->weight < b->weight;
+	}
+};
+
+unordered_set<Edge*>* Kri(Graph1* G)
+{
+	
+	unordered_map<Node*, int> cmap;
+	priority_queue<Edge*,vector<Edge*>,Edgeo> cqueue;
+	
+	for (Edge* E : G->Edges)
+	{
+		cqueue.push(E);
+	}
+	int i = 0;
+	for (pair<int,Node*> s : G->Nodes)
+	{
+
+		cmap.insert(make_pair(s.second, i++));
+
+	}
+	unordered_set<Edge*> * v = new unordered_set<Edge*>();
+	while (!cqueue.empty())
+	{
+
+		Edge* E = cqueue.top();
+		cqueue.pop();
+		if (cmap[E->From] != cmap[E->To])
+		{
+
+			v->insert(E);
+			cmap[E->To] = cmap[E->From];
+
+		}
+
+	}
+	return v;
+}
+unordered_set<Edge*>* pri(Graph1* cGraph)
+{
+	unordered_set<Node*> NSet;
+	priority_queue<Edge*, vector<Edge*>, Edgeo> prio;
+	unordered_set<Edge*>* resu = new unordered_set<Edge*>();
+	for (pair<int, Node*> N : cGraph->Nodes)
+	{
+		if (NSet.find(N.second) == NSet.end())
+	 {
+		NSet.insert(N.second);
+		for (Edge* E :N.second->Edges)
+		{
+			prio.push(E);
+		}
+
+	 }
+		while (!prio.empty()) {
+			Edge* Ed = prio.top();
+			prio.pop();
+			Node* N = Ed->To;
+			if (NSet.find(N) == NSet.end())
+			{
+				resu->insert(Ed);
+				NSet.insert(N);
+				for (Edge* E : N->Edges)
+				{
+					prio.push(E);
+				}
+			}
+		}
+	}
+
+	return resu;
+}
+ 
+
+Node* selectedMin(unordered_map<Node*, int >* dis, unordered_set<Node*>* selectedNode)
+{
+	Node* l = nullptr;
+	int Min = INT_MAX;
+	for (pair<Node*, int> m : *dis)
+	{
+
+		if ((*selectedNode).find(m.first) == (*selectedNode).end() && m.second < Min)
+		{
+			Min = m.second;
+			l = m.first;
+		}
+	}
+	return l==nullptr? nullptr: l;
+}
+
+unordered_map<Node*, int>* djstra(Node* cNode)
+{
+	unordered_map<Node*, int >*dis = new unordered_map<Node*,int>;
+	(*dis).insert(make_pair(cNode, 0));
+	unordered_set<Node*>selectedNode;
+	Node* m = selectedMin(dis, &selectedNode);
+	while (m != nullptr)
+	{
+		for (Edge* E : m->Edges)
+		{
+			Node* N = E->To;
+			if ((*dis).find(N) == (*dis).end()) {
+				(*dis).insert(make_pair(N, (*dis)[m] + E->weight));
+			}
+			(*dis).insert(make_pair(N, min((*dis)[N], (*dis)[m] + E->weight)));
+		}
+		selectedNode.insert(m);
+		m = selectedMin(dis, &selectedNode);
+	}
+	return dis;
+}
+
+struct TreeN {
+	int pass;
+	int end;
+	TreeN** T;
+	TreeN() {
+		pass = 0;
+		end = 0;
+		T = new TreeN*[26];
+		for (int i = 0; i < 26; i++)
+		{
+			T[i] = nullptr;
+		}
+	}
+};
+
+class preTree {
+private:
+	TreeN* root;
+public:
+	preTree() {
+		root = new TreeN;
+	}
+	void insert(string s) {
+		TreeN* t = root;
+		int index;
+		for (int i = 0; i < s.size(); i++)
+		{
+			t->pass++;
+			 index = s[i] - 'a';
+			if (t->T[index] == nullptr)
+			{
+				t->T[index] = new TreeN();
+			}
+			t = t->T[index];
+		}
+		t->end++;
+	}
+
+	int Search(string  s)
+	{
+		TreeN* t = root;
+		int index;
+		for (int i = 0; i < s.size(); i++)
+		{
+
+			 index = s[i] - 'a';
+			if (t->T[index] != nullptr) {
+				t = t->T[index];
+			}
+			else {
+				return 0;
+			}
+		}
+		return t->end;
+	}
+	int preAs(string s)
+	{
+		TreeN* t = root;
+		int index;
+		for (int i = 0; i < s.size(); i++)
+		{
+
+			 index = s[i] - 'a';
+			if (t->T[index] != nullptr) {
+				t = t->T[index];
+			}
+			else {
+				return 0;
+			}
+		}
+		return t->pass;
+
+
+
+	}
+
+
+	void  deletea(string s)
+	{
+		if (Search(s) != 0){
+			TreeN* t = root;
+			for (int i = 0; i < s.size(); i++){
+				int index = s[i] - 'a';
+				if (--t->pass == 0) {
+					
+				}
+				t = t->T[index];
+			}
+			t->end--;
+		}
+	}
+};
+
+
+
 int main()
 {
-	int v[4][3] = {
-		{1,3,1},
-		{2,3,2},
-		{2,4,3},
-		{3,2,4}
-	};
-	Graph1* G =   CreatMap(v,4);
+	//int v[4][3] = {
+	//	{1,3,1},
+	//	{2,4,2},
+	//	{1,2,3},
+	//	{4,3,4}
+	//};
+	//Graph1* G =   CreatMap(v,4);
+	// 
+	// 
 	//BFS1(G->Nodes[1]);
-	DFS(G->Nodes[1]);
+	//cout << endl;
+	// 
+	// 
+	//DFS(G->Nodes[1]);
+	//cout << endl;
+	// 
+	//vector<Node*> b = TuoPUSort(G);
+	//for (Node* n :b)
+	//{
+	//	cout << n->value << " " << n->in << endl;
+	//}
+
+
+
+	//K 算法
+	/* unordered_set<Edge*> *b =  Kri(G);
+	 for (Edge* e : *b)
+	 {	
+		 cout << e->From->value << " " << e->To->value << endl;
+	 }*/
+
+
+	//  迪借斯特拉拉
+	//unordered_map<Node*, int>* c = djstra(G->Nodes[1]);
+	//for (pair<Node*, int> m : *c)
+	//{
+	//	cout << m.first->value << " " << m.second << endl;
+	// }
+
+
+	preTree p;
+	p.insert("abc");
+	p.insert("abc");
+
+	cout<<p.preAs("ab");
+
+
+
 }
 
 
