@@ -4,6 +4,8 @@
 #include<algorithm>
 #include<queue>
 #include<stack>
+#include<cmath>
+#include<cstdlib>
 #include<unordered_map>
 #include<unordered_set>
 
@@ -37,7 +39,7 @@ void kmpMatch(string master, string sub, int* next) {
 	int j = 0;
 	int c = master.size();
 	int v = sub.size();
-	while (i < c && j < v) {
+	while (i < c && j < v) {  
 		if (j == -1 || master[i] == sub[j]) {
 			i++;
 			j++;
@@ -131,7 +133,7 @@ void CreatTree(TreeNode** Root)
 	cin >> ch;
 	if (ch != 0)
 	{
-		(*Root) = new TreeNode;
+		(*Root) = new TreeNode; 
 		(*Root)->data = ch;
 		CreatTree(&(*Root)->Lchild);
 		CreatTree(&(*Root)->Rchild);
@@ -1136,6 +1138,12 @@ unordered_set<Edge*>* Kri(Graph1* G)
 	}
 	return v;
 }
+
+
+
+
+
+
 unordered_set<Edge*>* pri(Graph1* cGraph)
 {
 	unordered_set<Node*> NSet;
@@ -1161,7 +1169,7 @@ unordered_set<Edge*>* pri(Graph1* cGraph)
 				resu->insert(Ed);
 				NSet.insert(N);
 				for (Edge* E : N->Edges)
-				{
+				{  
 					prio.push(E);
 				}
 			}
@@ -1188,6 +1196,9 @@ Node* selectedMin(unordered_map<Node*, int >* dis, unordered_set<Node*>* selecte
 	return l==nullptr? nullptr: l;
 }
 
+
+
+
 unordered_map<Node*, int>* djstra(Node* cNode)
 {
 	unordered_map<Node*, int >*dis = new unordered_map<Node*,int>;
@@ -1210,6 +1221,9 @@ unordered_map<Node*, int>* djstra(Node* cNode)
 	return dis;
 }
 
+
+
+
 struct TreeN {
 	int pass;
 	int end;
@@ -1225,6 +1239,7 @@ struct TreeN {
 	}
 };
 
+
 class preTree {
 private:
 	TreeN* root;
@@ -1234,8 +1249,9 @@ public:
 	}
 	void insert(string s) {
 		TreeN* t = root;
+		int c = s.size();
 		int index;
-		for (int i = 0; i < s.size(); i++)
+		for (int i = 0; i < c; i++)
 		{
 			t->pass++;
 			 index = s[i] - 'a';
@@ -1252,7 +1268,8 @@ public:
 	{
 		TreeN* t = root;
 		int index;
-		for (int i = 0; i < s.size(); i++)
+		int c = s.size();
+		for (int i = 0; i < c; i++)
 		{
 
 			 index = s[i] - 'a';
@@ -1268,8 +1285,8 @@ public:
 	int preAs(string s)
 	{
 		TreeN* t = root;
-		int index;
-		for (int i = 0; i < s.size(); i++)
+		int index;		int c = s.size();
+		for (int i = 0; i < c; i++)
 		{
 
 			 index = s[i] - 'a';
@@ -1285,16 +1302,26 @@ public:
 
 
 	}
+	void delteback(TreeN* t)
+	{     
 
-
+		for (int i = 0; i < 26; i++) {
+			if (t->T[i] != nullptr) {
+				delteback(t->T[i]);
+			}
+		}
+		delete t;
+	}
 	void  deletea(string s)
 	{
+		int c = s.size();
 		if (Search(s) != 0){
 			TreeN* t = root;
-			for (int i = 0; i < s.size(); i++){
+
+			for (int i = 0; i < c; i++){
 				int index = s[i] - 'a';
 				if (--t->pass == 0) {
-					
+					delteback(t);
 				}
 				t = t->T[index];
 			}
@@ -1304,16 +1331,545 @@ public:
 };
 
 
+typedef struct time {
+	int start;
+	int end;
+	time(int start, int end) {
+		this->start = start;
+		this->end = end;
+	}
+}time1;
 
-int main()
+class compt {
+public:
+	bool operator()(struct time& a, struct time& b)
+	{
+		return a.end < b.end;
+	}
+};
+int cishu(vector<struct time>p, struct time a)
 {
-	//int v[4][3] = {
-	//	{1,3,1},
-	//	{2,4,2},
-	//	{1,2,3},
-	//	{4,3,4}
-	//};
-	//Graph1* G =   CreatMap(v,4);
+	sort(p.begin(), p.end(), compt());
+	int result = 0;
+	int c = p.size();
+	for (int i = 0; i < c; i++) {
+		if (a.start <= p[i].start &&a. end > p[i].end)
+		{
+			result++;
+			a.start = p[i].end;
+		}
+	}
+	return result;
+}
+ 
+typedef struct pro {
+	int cost;
+	int get;
+	pro(int c, int g)
+	{
+		cost = c;
+		get = g;
+	}
+}pro;
+
+
+class  mn{
+public:
+	bool operator()(pro& p,pro& c)
+	{	
+		return p.cost < c.cost;
+     }
+};
+class  mn1 {
+public:
+	bool operator()(pro& p, pro& c)
+	{
+		return p.cost > c.cost;
+	}
+};
+int  HowMuch(vector<pro> p,int inm,int k)
+{
+	priority_queue<pro, vector<pro>, mn>coss;
+	priority_queue<pro, vector<pro>, mn1>get;
+	for (pro& pp : p)
+	{
+		coss.push(pp);
+	}
+	for (int i = 0; i < k; i++) {
+		while (coss.top().cost <= inm) {
+			get.push(coss.top());
+			coss.pop();
+		}
+		if(!get.empty())
+		inm += get.top().get;
+            
+	}
+	return inm;
+}
+
+
+
+//       λ  
+class MidNum
+{
+
+	priority_queue<int, vector<int>, less <int >> Big;
+	priority_queue<int, vector<int>, greater<int>> small;
+public:
+	int num;
+	MidNum() {
+		num = 0;
+	}
+public:
+	void insert(int in)
+	{
+		num++;
+		if (Big.empty())
+		{
+			Big.push(in);
+		}
+		else {
+			if (in <= Big.top())
+			{
+				Big.push(in);
+			}
+			else {
+				small.push(in);
+			}
+			int v = Big.size() - small.size();
+			if (abs(v) >= 2)
+			{
+				if (v > 0)
+				{
+					small.push(Big.top());
+					Big.pop();
+				}
+				else {
+					Big.push(small.top());
+					small.pop();
+				}
+
+			}
+
+
+		}
+
+	}
+	/*float GetMid()
+	{
+		if (num == 0)return -1;
+		else if (num % 2 == 0) {
+			return (Big.top() + small.top()) /2;
+		}
+		else {
+			if (Big.size() > small.size()) {
+				return Big.top();
+			}
+			return small.top();
+		}
+	}*/
+};
+bool Isvaild(int* Q, int s, int i)
+{
+	for (int k = 0; k < s; k++)
+	{
+		if (Q[k] == i || abs(Q[k] - i) == abs(k - s)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+int process(int s, int* Q, int n)
+{
+	if (s == n) {
+		return 1;
+	}
+
+	int res = 0;
+
+	for (int i = 0; i < n; i++) {
+		if (Isvaild(Q, s, i)) {
+			Q[s] = i;
+			res += process(s + 1, Q, n);
+		}
+	}
+	return res;
+}
+
+
+int BitProcess(int limit, int col, int left, int right)
+{
+	if (col == limit)return 1;
+	
+	int pos = limit & ~(col | left | right);
+	int res = 0;
+	while (pos) {
+		int ZRig = pos & (~pos + 1);
+		pos = pos - ZRig;
+		res += BitProcess(limit, col | ZRig, (left | ZRig) << 1, (right | ZRig) >> 1);
+	}
+	return res;
+}
+
+//  32λ
+int NQueen(int n)
+{
+	/*if (n < 1)return 0;
+	int* Q = new int[n];
+	return process(0, Q, n);*/
+
+	if (n < 1|| n>32)return 0;
+	int limit = n == 32 ? -1 : (1 << n) - 1;
+	return BitProcess(limit, 0, 0, 0);
+}
+typedef struct RecordNode
+{
+	Node* node;
+	int distance;
+	RecordNode(Node* n , int di)
+	{
+		node = n;
+		distance = di;
+	}
+
+}RecordNode;
+class Nodeheap {
+
+public:
+
+	Node** Nodes;
+	int size;
+	unordered_map<Node*, int> indexmap;
+	unordered_map<Node*, int> distancemap;
+	Nodeheap( int size1) {
+		Nodes = new Node* [size1];
+		this->size = 0;
+	}
+public:
+	
+	void AddorUpdateorIgnore(Node* n, int dis)
+	{
+		if (InHeap(n))
+		{
+			distancemap.insert(make_pair(n, min(distancemap[n], dis)));
+			HeapInsert(n);
+		}
+
+		if (!IsEntered(n))
+		{
+			Nodes[size] = n;
+			distancemap.insert(make_pair(n, dis));
+			indexmap.insert(make_pair(n, size++));
+			HeapInsert(n);
+
+		}
+	}
+
+	void HeapInsert(Node* n)
+	{
+		int index = indexmap[n];
+		while (distancemap[Nodes[index]] < distancemap[Nodes[(index - 1) / 2]])
+		{
+			myswap(index, (index - 1) / 2);
+			index = (index - 1) / 2;
+		}
+
+	}
+
+	RecordNode pop()
+	{
+		RecordNode  R = RecordNode(Nodes[0], distancemap[Nodes[0]]);
+		myswap(0, size-1);
+		indexmap.insert(make_pair(Nodes[size - 1], -1));
+		distancemap.erase(Nodes[size - 1]);
+		delete Nodes[size - 1];
+		Nodes[--size] = nullptr;
+		Headpify(0);
+		return R;
+
+	}
+
+	void Headpify(int i)
+	{
+		int index = i;
+		int left = index * 2 + 1;
+		while (left < size)
+		{
+			int MoreSmall = left + 1 < size
+				&&
+				distancemap[Nodes[left + 1]] < distancemap[Nodes[left]] ? left + 1 : left;
+			int FinS = distancemap[Nodes[index]] < distancemap[Nodes[MoreSmall]] ? index : MoreSmall;
+			if (FinS == index)
+			{
+				break;
+			}
+			myswap(FinS, index);
+			left = (FinS * 2) + 1;
+		}
+
+
+	}
+
+
+
+	bool IsEmpty()
+	{
+		return size == 0;
+	}
+
+	bool IsEntered(Node* n)
+	{
+		return  indexmap.find(n) == indexmap.end();
+	}
+
+	bool InHeap(Node* n) {
+		return IsEntered(n) && indexmap[n] != -1;
+	}
+
+	void myswap(int index1, int index2) {
+		indexmap.insert(make_pair(Nodes[index1], index2));
+		indexmap.insert(make_pair(Nodes[index2], index1));
+		Node* t = Nodes[index1];
+		Nodes[index1] = Nodes[index2];
+		Nodes[index2] = t;
+	}
+
+};
+
+unordered_map<Node*, int> * djsheap(Node* n)
+{
+	Nodeheap heap = Nodeheap(4);
+	heap.AddorUpdateorIgnore(n, 0);
+	unordered_map<Node*, int>* p = new unordered_map<Node*, int>;
+	while (!heap.IsEmpty())
+	{
+		RecordNode min = heap.pop();
+		for (Edge* E :  min.node->Edges)
+		{
+			Node* n = E->To;
+			heap.AddorUpdateorIgnore(n, min.distance + E->weight);
+		}
+		p->insert(make_pair(min.node, min.distance));
+
+	}
+
+	return p;
+
+}
+
+void Hanprocess(int i,string star, string end, string other)
+{
+	if (i == 1)
+		cout << i << " " << star << " " << end << endl;
+	else {
+		Hanprocess(i - 1, star, other, end);
+		cout << i << " " << star << " " << end << endl;
+		Hanprocess(i - 1, other, end, star);
+	}
+
+
+}
+
+void hannuota(int n)
+{
+	if (n == 0)return;
+	Hanprocess(n, "  ", "  ", "  ");
+}
+
+//charChildSequence
+
+void pros(string *s, int i)
+{
+	if (i == (*s).size()) cout << *s<< " ";
+	else{
+		pros(s, i + 1);
+		char  temp = (*s)[i];
+		(*s)[i] = 0;
+		pros(s, i + 1);
+		(*s)[i] = temp;
+	}
+
+}
+
+void Sequence(string s)
+{
+	pros(&s, 0);
+}
+
+
+//  ӡ ַ   ȫ       û   ظ 
+
+
+void AllSequence(string s, int i, vector<string>&a)
+{	
+	int len = s.size();
+	if (i == len) {
+		a.push_back(s);
+	}
+	bool isuse[26] = { false };
+	for (int j = i; j < len; j++) {
+		if (!isuse[s[j] - 'a'])
+		{
+			isuse[s[j] - 'a'] = true;
+			swap(s[i], s[j]);
+			AllSequence(s, i + 1, a);
+			swap(s[i], s[j]);
+		}
+		
+	}
+
+
+
+}
+
+//  Ⱥ          {1  22  100  4};
+
+int f(int a[], int i, int j);
+int s(int a[], int i, int j)
+{
+	if (i == j)return 0;
+	return min(f(a, i + 1, j), f(a, i, j - 1));
+}
+
+int f(int a[], int i, int j)
+{
+	if (i == j)return a[i];
+	return max(a[i] + s(a, i + 1, j), a[j] + s(a, i, j - 1));
+}
+
+int WinScore(int arr[],int length)
+{
+	if (length == 0)return 0;
+
+	return max(f(arr, 0, length - 1), s(arr, 0, length - 1));
+
+}
+
+
+//    ջʹ õݹ 
+int GetUnder(stack<int>& stack);
+void Reserve(stack<int>& stack)
+{
+	if (stack.empty())return;
+
+		int under = GetUnder(stack);
+		Reserve(stack);
+		stack.push(under);
+}
+
+
+int GetUnder(stack<int>& stack)
+{
+	int cur = stack.top();
+	stack.pop();
+	if (stack.empty())return cur;
+	else {
+
+		int next = GetUnder(stack);
+		stack.push(cur);
+		return next;
+
+	}
+}
+
+//  1~ 26  滻Ϊ  ĸ    и   
+
+
+
+int processChar(int a[], int length, int i)
+{
+	if (i == length)return 1;
+	if (a[i] == 0)return 0;
+
+	if (a[i] == 1){
+		int res = processChar(a, length, i + 1);
+		if (i + 1 < length)
+			res += processChar(a, length, i + 2);
+		return res;
+	}
+	//if (a[i] == 2) {
+	//	int res = processChar(a, length, i + 1);
+	//	if (i + 1 < length && a[i + 1] < 7);
+	//	res+=processChar(a, length, i + 2);
+	//	return res;
+	//}
+	return processChar(a, length, i + 1);
+}
+
+
+
+
+
+
+int GetCharnum(int a[],int length)
+{
+	return processChar(a, length,0);
+}   
+
+
+double quickcheng(double x, long long N) {
+	if (N == 0)
+		return 0;
+
+	double y = quickcheng(x, N / 2);
+	return N % 2 == 0 ? y + y : y + y + x;
+}
+
+double myPow(double x, int n) {
+	long long N = n;
+	return quickcheng(x, N);
+}
+//int main()
+//{
+
+	//int a[5] = { 1,2,3,4,5 };
+	//cout << GetCharnum(a, 5);
+
+	//cout << myPow(4, 5);
+
+
+	//stack<int>s;
+	//s.push(1); s.push(2); s.push(3);
+	//Reserve(s);
+	//while (!s.empty())
+	//{
+	//	cout << s.top();
+	//	s.pop();
+	//}
+
+	//vector<string >a;
+	//AllSequence("absb", 0, a);
+	//for (string s : a)
+	//{
+	//	cout << s << endl;;
+	//}
+
+
+	//int a[4]{ 1, 2, 100, 4 };
+	//cout << WinScore(a, 4);
+
+
+
+	/*int v[4][3] = {
+		{1,3,1},
+		{2,4,2},
+		{1,2,3},
+		{4,3,4}
+	};
+	Graph1* G =   CreatMap(v,4);
+	unordered_map<Node*, int>  *p =  djsheap(G->Nodes[1]);
+	for (pair<Node*, int> c : *p)
+	{
+		cout << c.first->value << " " << c.second << endl;
+	}*/
+
+	//hannuota(3);
+
+
+	//Sequence("abs");
+
+
 	// 
 	// 
 	//BFS1(G->Nodes[1]);
@@ -1331,7 +1887,7 @@ int main()
 
 
 
-	//K �㷨
+	//K  㷨
 	/* unordered_set<Edge*> *b =  Kri(G);
 	 for (Edge* e : *b)
 	 {	
@@ -1339,7 +1895,7 @@ int main()
 	 }*/
 
 
-	//  �Ͻ�˹������
+	//   Ͻ ˹      
 	//unordered_map<Node*, int>* c = djstra(G->Nodes[1]);
 	//for (pair<Node*, int> m : *c)
 	//{
@@ -1347,28 +1903,39 @@ int main()
 	// }
 
 
-	preTree p;
-	p.insert("abc");
-	p.insert("abc");
+	//preTree p;
+	//p.insert("abc");
 
-	cout<<p.preAs("ab");
+	//p.insert("abc");
+
+	//cout<<p.preAs("ab");
 
 
+	//vector<struct time> p = { struct time(8,10),struct time(8,14),struct time(11,12),struct time(9,11) };
+	//cout << cishu(p, struct time(8, 20));
 
-}
+	/*MidNum M;
+	M.insert(1);
+	M.insert(4);
+	M.insert(10);
+	M.insert(6);
+	cout << M.GetMid();*/
+
+     //cout << NQueen(4);
+
+//}
 
 
 
 
 //int main()
 //{
-
-	//string s{ "abaccababd" };
 	//string b{ "abacdc" };
 	//KmpMtch(s, b, getNext(s));
 
 	/*TreeNode *Ro;
 	CreatTree(&Ro);
+	//string s{ "abaccaba
 	TreeNode* pre = nullptr;
 	InThreadTree(Ro, &pre);
 
@@ -1564,3 +2131,63 @@ for (int i = 0; i<4; i++)
 //
 //
 //}
+
+
+
+
+
+
+void AllSe(vector<string>& words, int i, vector<string>& res)
+{
+	int size = words.size();
+	if (i == size) {
+		string all;
+		for (int c = 0; c < size; c++) {
+			all += words[c];
+		}
+		res.push_back(all);
+		return;
+	}
+
+	unordered_set<string> set;
+	for (int j = i; j < size; j++) {
+		if (set.find(words[j]) == set.end())
+		{
+			set.insert(words[j]);
+			swap(words[i], words[j]);
+			AllSe(words, i + 1, res);
+			swap(words[i], words[j]);
+		}
+	}
+}
+
+	vector<int> findSubstring(string s, vector<string>& words) {
+		vector<string>res;
+		vector<int>re;
+		AllSe(words, 0, res);
+		for (string sub : res) {
+			int len = sub.size();
+			int index = 0;
+			while ((index = s.find(sub, index)) != string::npos) {
+				re.push_back(index);
+				index += 1;
+
+			}
+		}
+		return re;
+
+	}
+	int main() {
+		vector<string>wos = { "a"};
+		vector<int>re = findSubstring("a", wos);
+		for (int s : re) {
+			cout << s << endl;
+		}
+	}
+
+
+	//vector<int>  findSubstring(string s, vector<string>& words) {
+
+
+
+	//}
