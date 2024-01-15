@@ -4441,6 +4441,6 @@ int minimumTotal(vector<vector<int>>& triangle) {
 int main()
 {
 	vector<vector<int>> train{ {2} ,{3,4},{6,5,7},{4,1,8,3} };
-	minimumTotal(train);
+	cout<<minimumTotal(train);
 }
 
