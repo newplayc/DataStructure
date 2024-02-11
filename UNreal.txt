@@ -1,0 +1,45 @@
+物体 LOD   DesiredMaxDistance   超过距离取消绘画
+frozenRending   冻结渲染
+
+项目设置   遮挡剔除
+
+
+Stat Initviews   查看当前消耗
+
+r.AllowPrecomputedVisibility 1/0 开关PVS观察DC
+
+r.ShowRelevantPrecomputedVisibilityCells，仅在摄像机附近显示可视性单元格
+
+stat initview ：
+
+Statically Occluded Primitives：预计算可视性确定不可见的Primitive数量
+Decompress Occlusion：显示解压预计算可视性所用的时间
+stat memory：
+
+Precomputed Visibility Memory：显示当前用于预计算可视性的实际运行时内存使用
+
+r.VisualizeOccludedPrimitives 1 被遮挡物可视化查看被遮挡物 任何被遮挡Actor绘制一个绿色边界框
+
+ Depth Buffer
+顶点着色 ---光栅化  -- 像素着色                    镜面
+Base Color  Normal Metalic Roughness Specular SubSurface Shading Model Depth
+
+灯光     
+反射
+后期处理
+
+
+
+材质  ：
+
+
+objectPosition  物体坐标    WorldPosition 世界坐标
+
+Fresnel 边缘 0 - 1 配合 Lerp
+
+vertexNormalWs 顶点法线 pixelNormalWs 像素法线   mask 分通道
+
+cheapContrast  对比度调整
+
+
+SpeedTreeColorVariation   
