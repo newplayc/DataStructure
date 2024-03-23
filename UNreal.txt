@@ -1,8 +1,13 @@
 物体 LOD   DesiredMaxDistance   超过距离取消绘画
+
+
 frozenRending   冻结渲染
 
 项目设置   遮挡剔除
 
+Debug:
+
+ToggleDebugCamera 
 
 Stat Initviews   查看当前消耗
 
@@ -20,6 +25,8 @@ Precomputed Visibility Memory：显示当前用于预计算可视性的实际运
 
 r.VisualizeOccludedPrimitives 1 被遮挡物可视化查看被遮挡物 任何被遮挡Actor绘制一个绿色边界框
 
+
+
  Depth Buffer
 顶点着色 ---光栅化  -- 像素着色                    镜面
 Base Color  Normal Metalic Roughness Specular SubSurface Shading Model Depth
@@ -28,10 +35,24 @@ Base Color  Normal Metalic Roughness Specular SubSurface Shading Model Depth
 反射
 后期处理
 
+蓝图 ：
+
+fmath::findatlookrotation     根据两个location   得出一个方向 rotation
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 材质  ：
-
 
 objectPosition  物体坐标    WorldPosition 世界坐标
 
@@ -42,4 +63,19 @@ vertexNormalWs 顶点法线 pixelNormalWs 像素法线   mask 分通道
 cheapContrast  对比度调整
 
 
-SpeedTreeColorVariation   
+SpeedTreeColorVariation             makematrrialAttribute   创建材质  属性    breakmatrrialAttribute 分割材质属性
+ WorldAlignedBlend     节点将控制材质混合的位置和锐度
+
+MatLayerBlend_simple  - 该节点包含用于驱动混合的逻辑。在本例中，基础材质是Layer_Chrome，顶层材质是Layer_Snow。WorldAlignedBlend将插入到Alpha输入以驱动过渡。
+
+
+FuzzyShading材质函数，该函数可以在材质编辑器控制板中的"函数（Functions）"选项卡中找到。将 核心暗度（Core Darkness） 设置为0，将 幂（Power） 设置为1，并将 边缘亮度（EdgeBrightness） 设置为0.5。最后，将整个事物乘以非常淡的蓝色(R=0.8, G=0.9, B=0.95)，使其呈现冰冷的色调。
+
+skyBoxImage 天空
+
+
+
+
+动画混入混出
+物理资产
+关卡流
