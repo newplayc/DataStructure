@@ -79,3 +79,471 @@ skyBoxImage 天空
 动画混入混出
 物理资产
 关卡流
+
+
+
+
+VisibleDefaultsOnly
+// 仅在 Class Defaults 可见
+UPROPERTY(VisibleDefaultsOnly)
+	int32 VisibleDefaultsOnlyInt;
+
+VisibleInstanceOnly
+// 仅在实例化 Detail 可见
+UPROPERTY(VisibleInstanceOnly)
+	FVector VisibleInstanceOnlyVector;
+
+VisibleAnywhere
+//Class Defaults 和 实例化 Detail 可见
+UPROPERTY(VisibleAnywhere)
+	FString VisibleAnywhereString;
+
+EditDefaultsOnly
+//仅在 Class Defaults 可编辑
+UPROPERTY(EditDefaultsOnly)
+	int32 EditDefaultsOnlyInt;
+
+EditInstanceOnly
+//仅在实例化 Detail 可编辑
+UPROPERTY(EditInstanceOnly)
+	FVector EditInstanceOnlyVector;
+
+EditAnywhere
+//Class Defaults 和 实例化 Detail 可编辑
+UPROPERTY(EditAnywhere)
+	FString EditAnywhereString;
+
+
+BlueprintReadOnly
+//Variables 只读
+UPROPERTY(BlueprintReadOnly)
+	int32 intValue_BlueprintReadOnly;
+
+BlueprintReadWrite
+//Variables 可读写
+UPROPERTY(BlueprintReadWrite)
+	int32 intValue_BlueprintReadWrite;
+
+BlueprintAssignable
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FNotifyPawnChange, float, PawnHpPercent, float, PawnPhysicalShieldPercent, float, PawnMageShieldPercent);
+
+//蓝图中可绑定委托
+UPROPERTY(BlueprintAssignable)
+	FNotifyPawnChange NotifyPawnChange;
+
+Meta
+ 
+DisplayName 别名
+可以便于蓝图变量搜索，如果变量名不好记的话
+EditCondition 条件可编辑
+支持bool、比较等条件判断
+UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (DisplayName="UseOffset1、2 标志位") )
+	bool bUseOffset;
+
+UPROPERTY(EditAnywhere, meta = (DisplayName = "ContitionValue 控制 offset3"))
+	int32 ContitionValue;
+
+UPROPERTY(EditAnywhere, meta = (DisplayName = "ContitionColorBits 控制 offset4"))
+	EColorBits1 ContitionColorBits;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "bUseOffset"))
+	float Offset1;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseOffset"))
+	float Offset2;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "ContitionValue>0"))
+	float Offset3;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "ContitionColorBits==EColorBits1::ECB_Green"))
+	float Offset4;
+
+
+BindWidget 和 UMG 同名同类型控件绑定
+UPROPERTY(EditAnywhere, meta = (BindWidget))
+  UImage* TCanvas;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite , meta = (BindWidget))
+  UButton* Btn_Mass;
+
+
+UMETA 扩展宏
+cpp meta里的中文在蓝图经常会乱码
+解决方法一：高级保存选择 Unicode 65001
+解决办法二：使用UMETA中的DisplayName
+可用于Enum的元素别名
+可用于结构体的元素别名
+可用于Datatable的别名
+UPROPERTY(EditAnywhere)
+	FName ChineseName UMETA(DisplayName="中文名");
+
+UPROPERTY(EditAnywhere)
+	float Weight UMETA(DisplayName = "体重") = 65.0f;
+
+UPROPERTY(EditAnywhere)
+	EColorBits1 FavoriteColorBits UMETA(DisplayName = "最喜欢的颜色")=EColorBits1::ECB_Blue;
+
+
+BlueprintCallable ``蓝图可调用
+可设置返回值
+可通过参数形式，返回多个参数
+UFUNCTION(BlueprintCallable, Category="methods")
+	void FunBlueprintCallable1();
+
+UFUNCTION(BlueprintCallable, Category = "methods")
+	bool FunBlueprintCallable2(FString Path,float input1, const float& input2, float& output, TArray<int32> Points1, const TArray<int32>& Points2, TArray<FVector>& Position  );
+
+
+BlueprintPure 蓝图纯函数（必须要有返回值）
+没有执行引脚
+必须要有返回值
+UFUNCTION(BlueprintPure, Category = "methods")
+	float FunBlueprintPure1();
+
+UFUNCTION(BlueprintPure, Category = "methods")
+	void FunBlueprintPure2(float& Value);
+
+
+BlueprintNativeEvent 蓝图原生事件
+C++中定义事件，C++和蓝图中都可以实现(C++必须实现)。
+如果蓝图不实现,会执行C++的函数实现
+如果蓝图和C++都实现,蓝图则会覆盖C++实现，只执行蓝图实现.
+C++函数实现,需要额外定义一个名为:函数名+_Implementation的返回值和参数列表都一致的函数.
+BlueprintNativeEvent需要配合BlueprintCallable一起使用,否则蓝图中不可调用
+有返回值和无返回值 表现形式有所区别
+//DisplayName 蓝图中实际调用的函数名
+//DeprecationMessage显示警告信息
+//此处参数用Fsting str 编译不通过
+UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "methods", meta=(DisplayName="FunBlueprintNativeEvent测试",DeprecatedFunction, DeprecationMessage = "This FunBlueprintNativeEvent 的测试."))
+	void FunBlueprintNativeEvent(const FString& str="From C++");
+void AMyActor::FunBlueprintNativeEvent_Implementation(const FString& str)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Blue, str);
+}
+
+
+
+Exec 控制台可调用函数
+此函数可从游戏中的控制台中执行。Exec命令仅在特定类中声明时才产生作用。包括：
+
+Pawns,
+Player Controllers,
+Player Input,
+Cheat Managers,
+Game Modes,
+Game Instances,
+overriden Game Engine classes,
+Huds
+UFUNCTION(Exec, Category = "methods")
+	void FunExec(float Value);
+void AMyPawn::FunExec(float Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Blue, FString::Printf(TEXT("BPNative C++ Call  Value:%f"), Value));
+}
+
+
+
+ExpandEnumAsExecs
+h文件
+
+UENUM(BlueprintType)
+enum class BranchOutput : uint8
+{
+	Branch0,
+	Branch1,
+	Branch2,
+};
+
+UFUNCTION(BlueprintCallable, Category = "methods", Meta = (ExpandEnumAsExecs = "Branches"))
+		void FunExpandEnumAsExecs(int32 Input, BranchOutput& Branches);
+cpp文件
+
+void AMyActor::FunExpandEnumAsExecs(int32 Input, BranchOutput& Branches)
+{
+	if (Input == 0)
+	{
+		Branches = BranchOutput::Branch0;
+	}
+	else if(Input == 1)
+	{
+		Branches = BranchOutput::Branch1;
+	}
+	else
+	{
+		Branches = BranchOutput::Branch2;
+	}
+}
+
+
+
+TCHAR
+TCHAR就是UE4通过对char和wchar_t的封装
+
+char ANSI编码
+wchar_t 宽字符的Unicode编码
+使用 TEXT() 宏包裹作为字面值
+
+TCHAR* TCharString = TEXT("Hello, World!");
+
+	// 引擎字符串(TCHAR*) -> ANSI字符串(char*)
+	char* CharString = TCHAR_TO_ANSI(TCharString);
+
+	// 引擎字符串(TCHAR*) -> std::string
+	std::string str = TCHAR_TO_UTF8(TCharString);
+
+	// 引擎字符串(TCHAR*) -> wchar_t*
+	wchar_t* WCharString = TCHAR_TO_WCHAR(TCharString);
+
+	// ANSI字符串(char*) -> 引擎字符串(TCHAR*)
+	TCHAR* TCharString1 = ANSI_TO_TCHAR(CharString);
+
+	// wchar_t* -> 引擎字符串(TCHAR*)
+	TCHAR* TCharString2 = UTF8_TO_TCHAR(WCharString);
+	TCHAR* TCharString3 = WCHAR_TO_TCHAR(WCharString);
+
+
+
+FNames
+常用作标识符等不变的字符串（如：资源路径/资源文件类型/骨骼名称/表格行名等）
+
+比较字符串操作非常快
+即使多个相同的字符串，也只在内存存储一份副本，避免了冗余的内存分配操作
+不区分大小写
+使用
+初始化
+
+FName TestHUDName = FName(TEXT("ThisIsMyTestFName"));
+比较
+
+CompareFloat = TestFName.Compare(OtherFName);
+搜索
+
+if( FName(TEXT("pelvis"), FNAME_Find) != NAME_None ){}
+FString <-> FName
+
+TestHUDName = FName(*TestHUDString);
+TestHUDString = TestHUDName.ToString();
+
+
+FText
+FText 是一种静态字符串，在UE4中可以负责处理文本本地化、UI 文本显示等
+
+支持文本本地化
+提高文本渲染的性能
+较快的copy操作
+使用
+FString <-> FText
+
+TestHUDText = FText::FromString(TestHUDString);
+TestHUDString = TestHUDText.ToString();
+FName -> FText
+
+TestHUDText = FText::FromName(TestHUDName);
+比较 Unreal doc
+
+
+UENUM宏搭配BlueprintType可以将枚举暴露给蓝图，不使用的话，仅能在C++使用
+
+//定义一个原生enum class
+enum class EMyType 
+{
+	Type1,
+	Type2,
+	Type3,
+};
+
+namespace EState 
+{
+	enum Type {
+		Stop,
+		Close,
+		Open
+	};
+}
+
+// 带反射枚举
+UENUM(BlueprintType)
+enum class ECurrentState : uint8
+{
+	Idle UMETA(DisplayName="空闲"),
+	Attack UMETA(DisplayName="攻击"),
+	Roll UMETA(DisplayName="翻滚"),
+	Dead UMETA(DisplayName="死亡"),
+};
+
+UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ECurrentState MyCurrentState UMETA(DisplayName = "当前状态");
+image
+
+枚举值与字符串转换, 针对 UENUM
+
+.h
+
+UENUM()
+enum class ECultureTeam :uint8 {
+	EN = 0,
+	ZH = 1
+};
+//根据 enum 类型获取字符串
+template<typename TEnum>
+FString GetEnumValueAsString(const FString& Name, TEnum value);
+
+//根据字符串 获取 enum 值
+template<typename TEnum>
+TEnum GetEnumValueFromString(const FString& Name, FString value);
+.cpp
+
+template<typename TEnum>
+FString DataHandle::GetEnumValueAsString(const FString& Name, TEnum value)
+{
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
+	if (!EnumPtr)
+		return FString("InValid");
+	return EnumPtr->GetNameStringByIndex((int32)value);
+}
+
+template<typename TEnum>
+TEnum DataHandle::GetEnumValueFromString(const FString& Name, FString value)
+{
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
+	if (!EnumPtr)
+		return TEnum(0);
+	return (TEnum)EnumPtr->GetIndexByNameString(value);
+}
+调用
+
+GetEnumValueAsString<ECultureTeam>(FString("ECultureTeam"), CurrentCulture);
+GetEnumValueFromString<ECultureTeam>(FString("ECultureTeam"), FString("EN"));
+
+UENUM宏搭配BlueprintType可以将枚举暴露给蓝图，不使用的话，仅能在C++使用
+
+//定义一个原生enum class
+enum class EMyType 
+{
+	Type1,
+	Type2,
+	Type3,
+};
+
+namespace EState 
+{
+	enum Type {
+		Stop,
+		Close,
+		Open
+	};
+}
+
+// 带反射枚举
+UENUM(BlueprintType)
+enum class ECurrentState : uint8
+{
+	Idle UMETA(DisplayName="空闲"),
+	Attack UMETA(DisplayName="攻击"),
+	Roll UMETA(DisplayName="翻滚"),
+	Dead UMETA(DisplayName="死亡"),
+};
+
+UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ECurrentState MyCurrentState UMETA(DisplayName = "当前状态");
+image
+
+枚举值与字符串转换, 针对 UENUM
+
+.h
+
+UENUM()
+enum class ECultureTeam :uint8 {
+	EN = 0,
+	ZH = 1
+};
+//根据 enum 类型获取字符串
+template<typename TEnum>
+FString GetEnumValueAsString(const FString& Name, TEnum value);
+
+//根据字符串 获取 enum 值
+template<typename TEnum>
+TEnum GetEnumValueFromString(const FString& Name, FString value);
+.cpp
+
+template<typename TEnum>
+FString DataHandle::GetEnumValueAsString(const FString& Name, TEnum value)
+{
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
+	if (!EnumPtr)
+		return FString("InValid");
+	return EnumPtr->GetNameStringByIndex((int32)value);
+}
+
+
+
+BlueprintType可以将枚举暴露给蓝图
+
+//结构体
+USTRUCT(BlueprintType)
+struct FMyStruct
+{
+	GENERATED_BODY()
+
+	// 暴露给蓝图
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Test Variables")
+	int32 MyIntegerMemberVariable;
+
+	// 不暴露给蓝图
+	int32 NativeOnlyMemberVariable;
+
+	// 蓝图图表无法访问此UObject指针，但是指针对UE4的反射、智能指针和垃圾回收系统可见。
+	UPROPERTY()
+	UObject* SafeObjectPointer;
+};
+
+UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FMyStruct MyStruct;
+image
+
+继承FTableRowBase之后可以用于DataTable
+
+struct FInventoryItemInfo : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ItemName UMETA(DisplayName="名称");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 index UMETA(DisplayName="编号");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bCanStaking UMETA(DisplayName="可否叠加");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 Count UMETA(DisplayName="数量");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UTexture2D* Icon UMETA(DisplayName="图标");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AActor> ItemClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USkeletalMesh* SkeletalMesh;
+};
+
+UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FInventoryItemInfo EmptyItem;
+template<typename TEnum>
+TEnum DataHandle::GetEnumValueFromString(const FString& Name, FString value)
+{
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
+	if (!EnumPtr)
+		return TEnum(0);
+	return (TEnum)EnumPtr->GetIndexByNameString(value);
+}
+调用
+
+GetEnumValueAsString<ECultureTeam>(FString("ECultureTeam"), CurrentCulture);
+GetEnumValueFromString<ECultureTeam>(FString("ECultureTeam"), FString("EN"));
+
+
+
+
