@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>save.png</file>
+        <file>Marry.png</file>
+    </qresource>
+</RCC>

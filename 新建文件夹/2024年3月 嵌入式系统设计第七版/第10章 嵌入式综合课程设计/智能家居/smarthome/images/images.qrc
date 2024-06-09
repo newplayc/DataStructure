@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>telphone.png</file>
+        <file>up_wsn_bg2.jpg</file>
+        <file>0.png</file>
+        <file>01.jpg</file>
+        <file>1.png</file>
+        <file>02.jpg</file>
+        <file>2.png</file>
+        <file>3.png</file>
+        <file>04.jpg</file>
+        <file>4.png</file>
+        <file>05.jpg</file>
+        <file>5.png</file>
+        <file>6.png</file>
+        <file>7.png</file>
+        <file>8.png</file>
+        <file>9.png</file>
+        <file>111.jpg</file>
+        <file>222.jpg</file>
+        <file>back.png</file>
+        <file>bg_zigbee.png</file>
+        <file>button1.jpg</file>
+        <file>button2.jpg</file>
+        <file>car1.png</file>
+        <file>car2.png</file>
+        <file>node_dir.png</file>
+        <file>node_dir_selected.png</file>
+        <file>node_light.png</file>
+        <file>node_light_selected.png</file>
+        <file>node_magt.png</file>
+        <file>node_magt_selected.png</file>
+        <file>node_smog.png</file>
+        <file>node_smog_selected.png</file>
+        <file>node_warning.png</file>
+        <file>node_warning_selected.png</file>
+        <file>savenum.png</file>
+        <file>star.png</file>
+        <file>t1.png</file>
+        <file>t2.png</file>
+        <file>t3.png</file>
+        <file>t4.png</file>
+        <file>t5.png</file>
+        <file>open.jpg</file>
+        <file>close.jpg</file>
+    </qresource>
+</RCC>

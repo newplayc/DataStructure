@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWidget</class>
+ <widget class="QWidget" name="MainWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWidget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QFrame" name="frame_10">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>60</y>
+     <width>772</width>
+     <height>407</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QFrame" name="frame_11">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>558</width>
+      <height>407</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="pushButton_light">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>220</y>
+       <width>59</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+     </property>
+     <property name="text">
+      <string>电灯</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_temp">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>60</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>温度：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_temp_value">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>10</y>
+       <width>40</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_hum">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>10</y>
+       <width>60</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>湿度：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_hum_value">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>10</y>
+       <width>40</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_temp_value_2">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>10</y>
+       <width>50</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>℃</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_hum_value_2">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>10</y>
+       <width>50</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>%</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_12">
+    <property name="geometry">
+     <rect>
+      <x>564</x>
+      <y>0</y>
+      <width>208</width>
+      <height>407</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_warn">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>10</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>  警报</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="number_value">
+     <property name="geometry">
+      <rect>
+       <x>59</x>
+       <y>210</y>
+       <width>141</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="maxLength">
+      <number>11</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>210</y>
+       <width>35</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(:/images/telphone.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QFrame" name="frame_13">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>243</y>
+       <width>180</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="Steln">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>120</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x41</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">outline-style:none;
+background-image: url(:/images/savenum.png);</string>
+      </property>
+      <property name="text">
+       <string>                  *</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key6">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>44</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x36</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/6.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                       6</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key4">
+      <property name="geometry">
+       <rect>
+        <x>124</x>
+        <y>44</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x34</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/4.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                 4</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key0">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>120</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x30</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/0.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                0</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_Back">
+      <property name="geometry">
+       <rect>
+        <x>124</x>
+        <y>120</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x40</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/back.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                -</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key2">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>82</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x32</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/2.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                   2</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key8">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>6</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x38</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/8.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                      8</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key3">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>82</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x33</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/3.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                  3</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key1">
+      <property name="geometry">
+       <rect>
+        <x>124</x>
+        <y>82</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x31</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/1.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                1</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key9">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>6</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x39</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/9.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>           9</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key7">
+      <property name="geometry">
+       <rect>
+        <x>134</x>
+        <y>6</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x37</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/7.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                     7</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="key5">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>44</y>
+        <width>50</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="accessibleName">
+       <string>0x35</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/images/5.png);
+outline-style:none;</string>
+      </property>
+      <property name="text">
+       <string>                     5</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="style">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>68</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(:/images/t2.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="weizhi">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>35</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(:/images/t1.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="state_b">
+     <property name="geometry">
+      <rect>
+       <x>32</x>
+       <y>98</y>
+       <width>40</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>状态:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="state">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>103</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-image: url(:/images/t3.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="style_value_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>63</y>
+       <width>90</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="state_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>98</y>
+       <width>90</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="weizhi_b">
+     <property name="geometry">
+      <rect>
+       <x>32</x>
+       <y>30</y>
+       <width>40</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>位置:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="weizhi_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>90</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="style_b">
+     <property name="geometry">
+      <rect>
+       <x>32</x>
+       <y>63</y>
+       <width>40</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>类型:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="state_sim">
+     <property name="geometry">
+      <rect>
+       <x>79</x>
+       <y>130</y>
+       <width>91</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>not initialed</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="state_b_sim">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>130</y>
+       <width>81</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>SIM状态:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="state_b_sim_2">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>160</y>
+       <width>71</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>发送状态:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="send_msg">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>160</y>
+       <width>111</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Not send!</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>Exp7/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>32</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1035</ColumnWidth1><ColumnWidth2>276</ColumnWidth2><ColumnWidth3>69</ColumnWidth3></Build>
+      <TerminalIO/>
+    </Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-17814-13524</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>Exp7</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-21766-13655</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>E:\12&#x6708;20&#x53F7;&#x540e;&#x4eFB;&#x52A1;\fc\Basic\Exp7\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1210</SelStart><SelEnd>1210</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\12&#x6708;20&#x53F7;&#x540e;&#x4eFB;&#x52A1;\&#x7269;&#x8054;&#x7F51;II&#x578B;_CC2530&#x5149;&#x76D8;\&#x7269;&#x8054;&#x7F51;&#x65e0;&#x7eBF;&#x4F20;&#x611F;&#x7F51;&#x7eDC;&#x90e8;&#x5206;\exp\Basic\Exp7\main.c</Filename><XPos>0</XPos><YPos>67</YPos><SelStart>1963</SelStart><SelEnd>1963</SelEnd></Tab><ActiveTab>1</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-01388930><key>iaridepm.enu1</key></Toolbar-01388930></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>396</Bottom><Right>106</Right><x>-2</x><y>-2</y><xscreen>108</xscreen><yscreen>141</yscreen><sizeHorzCX>138817</sizeHorzCX><sizeHorzCY>243103</sizeHorzCY><sizeVertCX>138817</sizeVertCX><sizeVertCY>686207</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>139</Bottom><Right>780</Right><x>-2</x><y>-2</y><xscreen>782</xscreen><yscreen>141</yscreen><sizeHorzCX>1005141</sizeHorzCX><sizeHorzCY>243103</sizeHorzCY><sizeVertCX>138817</sizeVertCX><sizeVertCY>243103</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
